@@ -13,7 +13,6 @@ export function GlobalProvider({ children }) {
       try {
         const res = await fetch(`${API_URL}/tasks`);
         const data = await res.json();
-        console.log(data);
         setTasks(data);
       } catch (err) {
         console.error("Errore nella chiamata al server:", err);
