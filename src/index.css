@@ -1,0 +1,31 @@
+.nav-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px 25px;
+  background: #1a1a1a;
+  border-bottom: 2px solid #333;
+}
+
+.nav-bar a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.nav-bar a:hover {
+  background-color: #333;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.active,
+.nav-bar a.active {
+  background-color: #ff3366;
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 51, 102, 0.4);
+}

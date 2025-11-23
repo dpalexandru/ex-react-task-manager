@@ -1,10 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddTask from "./pages/AddTask";
+import TaskList from "./pages/TaskList"
+import NavBar from "./components/NavBar";
 
 function App() {
 
   return (
-    <>
-      <h1>First commit</h1>
-    </>
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<TaskList />} />
+        <Route path="/addtask" element={<AddTask />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
