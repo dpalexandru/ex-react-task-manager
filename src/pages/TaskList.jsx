@@ -1,10 +1,11 @@
 import React from 'react'
 import { useGlobalContext } from '../context/GlobalContext'
+import TaskRow from '../components/TaskRow';
+
 
 const TaskList = () => {
   const { tasks } = useGlobalContext()
-  console.log(tasks)
-
+  console.log("Render")
   return (
     <div>
       <h1 className="titolo">Elenco dei Task</h1>
@@ -20,11 +21,7 @@ const TaskList = () => {
 
         <tbody>
           {tasks.map((task, index) => (
-            <tr key={index}>
-              <td>{task.title}</td>
-              <td>{task.status}</td>
-              <td>{new Date(task.createdAt).toLocaleString("it-IT")}</td>
-            </tr>
+            <TaskRow key={index} task={task} />
           ))}
         </tbody>
       </table>
