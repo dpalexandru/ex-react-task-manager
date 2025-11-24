@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import Modal from '../components/Modal';
 
 
-const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
+const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~\"";
 
 
 const AddTask = () => {
@@ -16,15 +16,25 @@ const AddTask = () => {
 
   function stampaForm(e) {
     e.preventDefault();
+    // controllo su nometask
     if (!nomeTask) {
       setErrore("Inserisci un nome!");
       return;
     }
-
+    if (isNomeTaskValid) {
+      setErrore("Il nome della task non deve contenere carattere speciali");
+      return;
+    }
 
     console.log(nomeTask, textareaRef.current.value, statusRef.current.value)
   }
 
+  // controllo in tempo reale sul nome ( non deve contenere carateri)
+  const isNomeTaskValid = useMemo(() => {
+    const isValid = [...symbols].some(sym => nomeTask.includes(sym))
+    return isValid
+
+  }, [nomeTask])
 
   return (
     <div className='container-form'>
@@ -37,6 +47,11 @@ const AddTask = () => {
           value={nomeTask}
           onChange={(e) => setNomeTask(e.target.value)}
         />
+        {isNomeTaskValid && (
+          <p className="errore">
+            Il nome delal task non deve contenere caratteri speciali
+          </p>
+        )}
 
 
         <textarea name="description"
