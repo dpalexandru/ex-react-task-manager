@@ -1,14 +1,27 @@
 import React, { useState, useRef } from 'react'
+import Modal from '../components/Modal';
+
+
+const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
+
 
 const AddTask = () => {
   //stati e ref
   const [nomeTask, setNomeTask] = useState("")
+  const [errore, setErrore] = useState("");
+
   const textareaRef = useRef();
   const statusRef = useRef();
 
 
   function stampaForm(e) {
     e.preventDefault();
+    if (!nomeTask) {
+      setErrore("Inserisci un nome!");
+      return;
+    }
+
+
     console.log(nomeTask, textareaRef.current.value, statusRef.current.value)
   }
 
@@ -16,6 +29,8 @@ const AddTask = () => {
   return (
     <div className='container-form'>
       <form action="" onSubmit={stampaForm}>
+        <Modal message={errore} onClose={() => setErrore("")} />
+
 
         <input type="text"
           placeholder='Neme della task'
