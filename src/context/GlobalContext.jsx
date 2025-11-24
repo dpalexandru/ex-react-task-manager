@@ -1,28 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import useTasks from "../hooks/ useTasks";
 
 const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   // stati 
-  const [tasks, setTasks] = useState([]);
+  const [tasks, addTask, removeTask, updateTask] = useTasks()
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        const res = await fetch(`${API_URL}/tasks`);
-        const data = await res.json();
-        setTasks(data);
-      } catch (err) {
-        console.error("Errore nella chiamata al server:", err);
-      }
-    }
-    fetchTasks();
-  }, []);
 
   return (
-    <GlobalContext.Provider value={{ tasks, setTasks }}>
+    <GlobalContext.Provider value={{ tasks, addTask, removeTask, updateTask }}>
       {children}
     </GlobalContext.Provider>
   );
