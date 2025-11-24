@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from 'react'
+import TaskRow from "../components/TaskRow";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -22,9 +23,28 @@ const useTasks = () => {
     fetchTasks();
   }, []);
 
-  //aggiungi task
-  function addTask(params) {
 
+  //aggiungi task
+  async function addTask(obj) {
+
+    try {
+      const response = await fetch(`${API_URL}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      });
+
+      const { success, message, task } = await response.json();
+      if (!success) {
+        throw new Error(message)
+      }
+      setTasks(prev => [...prev, task])
+
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   //rimuovi task

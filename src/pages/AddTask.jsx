@@ -1,5 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react'
 import Modal from '../components/Modal';
+import { useGlobalContext } from '../context/GlobalContext'
+import TaskRow from '../components/TaskRow';
 
 
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~\"";
@@ -9,12 +11,13 @@ const AddTask = () => {
   //stati e ref
   const [nomeTask, setNomeTask] = useState("")
   const [errore, setErrore] = useState("");
-
   const textareaRef = useRef();
   const statusRef = useRef();
+  const { addTask } = useGlobalContext()
 
 
-  function stampaForm(e) {
+
+  async function stampaForm(e) {
     e.preventDefault();
     // controllo su nometask
     if (!nomeTask) {
@@ -26,7 +29,22 @@ const AddTask = () => {
       return;
     }
 
-    console.log(nomeTask, textareaRef.current.value, statusRef.current.value)
+    const newTask = {
+      title: nomeTask.trim(),
+      description: textareaRef.current.value,
+      status: statusRef.current.value
+    }
+
+    try {
+      await addTask(newTask)
+      setNomeTask("")
+      textareaRef.current.value = ""
+      setErrore("Task registrata con successo")
+
+    } catch (error) {
+      setErrore("Erore chiamata server")
+      throw new Error(error)
+    }
   }
 
   // controllo in tempo reale sul nome ( non deve contenere carateri)
