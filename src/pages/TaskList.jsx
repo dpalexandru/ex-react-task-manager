@@ -5,7 +5,6 @@ import TaskRow from '../components/TaskRow';
 
 const TaskList = () => {
   const { tasks } = useGlobalContext()
-  console.log("Render")
   return (
     <div>
       <h1 className="titolo">Elenco dei Task</h1>
