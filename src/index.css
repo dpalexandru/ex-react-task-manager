@@ -103,6 +103,7 @@
 
 /* Bottone chiudi */
 .modal-box button {
+  margin: 5px;
   background: #007bff;
   color: #fff;
   border: none;
