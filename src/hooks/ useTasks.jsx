@@ -48,7 +48,23 @@ const useTasks = () => {
   }
 
   //rimuovi task
-  function removeTask(params) {
+  async function removeTask(id) {
+
+    try {
+      const response = await fetch(`${API_URL}/tasks/${id}`, {
+        method: "DELETE"
+      });
+
+      const { success, message } = await response.json();
+      if (success === false) {
+        throw new Error(message)
+      }
+
+      setTasks(prev => prev.filter(task => task.id !== Number(id)));
+
+    } catch (error) {
+      throw new Error(error)
+    }
 
   }
   //aggiorna task task
