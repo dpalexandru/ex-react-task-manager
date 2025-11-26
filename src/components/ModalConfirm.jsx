@@ -12,7 +12,7 @@ const ModalConfirm = ({ title, content, show, onClose, onConfirm, confirmText })
       <div className="modal-overlay">
         <div className="modal-box">
           <h1>{title}</h1>
-          <p>{content}</p>
+          {content}
           <button onClick={onClose}>Anulla</button>
           <button onClick={onConfirm}>{confirmText}</button>
         </div>

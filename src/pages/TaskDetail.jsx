@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
 import ModalConfirm from '../components/ModalConfirm';
+import EditTaskModal from '../components/EditTaskModal';
 
 const TaskDetail = () => {
-  const { tasks, removeTask } = useGlobalContext();
+  const { tasks, removeTask, updateTask } = useGlobalContext();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showEditTaskModal, setShowTaskModal] = useState(false)
 
   const task = tasks.find(t => t.id == id);
 
@@ -33,6 +35,18 @@ const TaskDetail = () => {
     setShowConfirm(false)
   }
 
+  // funzione hendleUpdate
+  const hendleUpdate = async updatedTask => {
+    try {
+      await updateTask(updatedTask);
+      setShowTaskModal(false)
+
+    } catch (error) {
+      console.error(error);
+
+    }
+  }
+
 
   // se non c'è il task
   if (!task) return <p>Task non trovato...</p>;
@@ -52,6 +66,17 @@ const TaskDetail = () => {
 
         />
       )}
+      {/* Modale di modifics con props*/}
+      {showEditTaskModal && (
+        <EditTaskModal
+          show={showEditTaskModal}
+          onClose={() => setShowTaskModal(false)}
+          task={task}
+          onSave={hendleUpdate}
+        />
+      )
+
+      }
 
       {task && (
         <>
@@ -63,6 +88,10 @@ const TaskDetail = () => {
 
           <button onClick={handleClickDelete}>
             Elimina Task
+          </button>
+          <button
+            onClick={() => setShowTaskModal(true)}>
+            Modifica task
           </button>
         </>
       )}

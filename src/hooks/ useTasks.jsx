@@ -78,7 +78,7 @@ const useTasks = () => {
         body: JSON.stringify(updatedTask),
       });
 
-      const { success, message } = await response.json();
+      const { success, message } = await res.json();
       if (success === false) {
         throw new Error(message)
       }
