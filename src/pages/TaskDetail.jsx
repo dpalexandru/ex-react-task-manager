@@ -19,7 +19,6 @@ const TaskDetail = () => {
       await removeTask(id);
       navigate("/");
 
-
     } catch (error) {
       console.error(error);
 

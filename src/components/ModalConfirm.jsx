@@ -2,9 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const ModalConfirm = ({ title, content, show, onClose, onConfirm, confirmText }) => {
-  const modalRoot = document.getElementById('modal-root');
-
-  if (!modalRoot) return null;
 
 
   if (show !== true) {
@@ -21,7 +18,7 @@ const ModalConfirm = ({ title, content, show, onClose, onConfirm, confirmText })
         </div>
       </div>
     ),
-    modalRoot
+    document.body
   );
 };
 

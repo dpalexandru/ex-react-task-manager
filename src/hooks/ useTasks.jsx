@@ -68,8 +68,29 @@ const useTasks = () => {
 
   }
   //aggiorna task task
-  function updateTask(params) {
+  async function updateTask(updatedTask) {
+    try {
+      const res = await fetch(`${API_URL}/tasks/${updatedTask.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      });
 
+      const { success, message } = await response.json();
+      if (success === false) {
+        throw new Error(message)
+      }
+
+      // aggiorno lo stato locale
+      setTasks(prev =>
+        prev.map(t => (t.id === updatedTask.id ? updatedTask : t))
+      );
+
+    } catch (err) {
+      console.error("Errore PUT:", err);
+    }
   }
 
 
