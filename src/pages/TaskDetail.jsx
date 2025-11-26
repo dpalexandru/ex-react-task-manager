@@ -90,6 +90,7 @@ const TaskDetail = () => {
             Elimina Task
           </button>
           <button
+            id='tasto-modifica'
             onClick={() => setShowTaskModal(true)}>
             Modifica task
           </button>
