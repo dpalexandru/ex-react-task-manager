@@ -28,15 +28,14 @@ const TaskList = () => {
 
   const sotedTask = useMemo(() => {
     return tasks.sort((a, b) => {
-
       let comparison;
-
       if (sortBy === "title") {
         comparison = a.title.localeCompare(b.title)
+      } else if (sortBy === "status") {
+        const statusOptions = ["To do", "Doing", "Done"]
+        comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
       }
-
       return comparison * sortOrder
-
     })
 
   }, [tasks, sortBy, sortOrder]
