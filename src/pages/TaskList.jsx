@@ -27,13 +27,17 @@ const TaskList = () => {
   // array task filtrato con use memo 
 
   const sotedTask = useMemo(() => {
-    return tasks.sort((a, b) => {
+    return [...tasks].sort((a, b) => {
       let comparison;
       if (sortBy === "title") {
         comparison = a.title.localeCompare(b.title)
       } else if (sortBy === "status") {
         const statusOptions = ["To do", "Doing", "Done"]
         comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
+      } else if (sortBy === "createdAt") {
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        comparison = dateA - dateB
       }
       return comparison * sortOrder
     })
