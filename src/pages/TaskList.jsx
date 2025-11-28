@@ -72,11 +72,17 @@ const TaskList = () => {
 
   return (
     <div>
-      <h1 className="titolo">Elenco dei Task</h1>
-      <span>Cerca per nome task</span>
-      <input type="text"
-        onChange={e => debounceSearch(e.target.value)}
-      />
+      <div className='actions-section'>
+        <h1 className="titolo">Elenco dei Task</h1>
+        <input type="text"
+          placeholder='Cerca per nome task'
+          onChange={e => debounceSearch(e.target.value)}
+        />
+        {selectedTaskIds.length > 0 && (
+          <button className='cancella-selezionati'>Elimina Task selezionati</button>
+        )}
+
+      </div>
 
       <table className="task-table">
         <thead>
@@ -114,6 +120,8 @@ const TaskList = () => {
           ))}
         </tbody>
       </table>
+
+
     </div>
   );
 };

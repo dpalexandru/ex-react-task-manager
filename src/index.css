@@ -329,3 +329,30 @@ input[type="checkbox"] {
   transform: scale(1.5);
   cursor: pointer;
 }
+
+/* parte actions section  */
+
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.actions-section input[type="text"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 300px;
+}
+
+.cancella-selezionati {
+  width: 200px;
+  background: #e63946;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: solid;
+  margin-top: 20px;
+}
