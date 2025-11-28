@@ -10,7 +10,8 @@ const TaskList = () => {
   //stati per l'ordinamento 
   const [sortBy, setSortBy] = useState("createdAt")
   const [sortOrder, setSortOrder] = useState(1)
-
+  const [searchQuery, setSearchQuery] = useState("")
+  console.log(searchQuery)
 
   //funzione ordinamento 
   const handlerSort = (field) => {
@@ -24,31 +25,38 @@ const TaskList = () => {
 
   const sortIcon = sortOrder === 1 ? "↑" : "↓";
 
+
   // array task filtrato con use memo 
+  const filteredAndSortedTasks = useMemo(() => {
+    return [...tasks]
+      .filter((t) => t.title.toLowerCase().includes(searchQuery.toLowerCase()))
+      .sort((a, b) => {
+        let comparison;
+        if (sortBy === "title") {
+          comparison = a.title.localeCompare(b.title)
+        } else if (sortBy === "status") {
+          const statusOptions = ["To do", "Doing", "Done"]
+          comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
+        } else if (sortBy === "createdAt") {
+          const dateA = new Date(a.createdAt).getTime()
+          const dateB = new Date(b.createdAt).getTime()
+          comparison = dateA - dateB
+        }
+        return comparison * sortOrder
+      })
 
-  const sotedTask = useMemo(() => {
-    return [...tasks].sort((a, b) => {
-      let comparison;
-      if (sortBy === "title") {
-        comparison = a.title.localeCompare(b.title)
-      } else if (sortBy === "status") {
-        const statusOptions = ["To do", "Doing", "Done"]
-        comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
-      } else if (sortBy === "createdAt") {
-        const dateA = new Date(a.createdAt).getTime()
-        const dateB = new Date(b.createdAt).getTime()
-        comparison = dateA - dateB
-      }
-      return comparison * sortOrder
-    })
-
-  }, [tasks, sortBy, sortOrder]
+  }, [tasks, sortBy, sortOrder, searchQuery]
   )
 
 
   return (
     <div>
       <h1 className="titolo">Elenco dei Task</h1>
+      <span>Cerca per nome task</span>
+      <input type="text"
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.target.value)}
+      />
 
       <table className="task-table">
         <thead>
@@ -74,7 +82,7 @@ const TaskList = () => {
         </thead>
 
         <tbody>
-          {sotedTask.map((task, index) => (
+          {filteredAndSortedTasks.map((task, index) => (
             <TaskRow key={index} task={task} />
           ))}
         </tbody>
