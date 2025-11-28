@@ -9,12 +9,22 @@ import { debounce } from "lodash";
 const TaskList = () => {
   const { tasks } = useGlobalContext()
 
-  //stati per l'ordinamento 
+  //stati  
   const [sortBy, setSortBy] = useState("createdAt")
   const [sortOrder, setSortOrder] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
-  console.log(searchQuery)
+  const [selectedTaskIds, setSelectedTaskIds] = useState([])
 
+
+
+  const toggleSelection = (taskId) => {
+    if (selectedTaskIds.includes(taskId)) {
+      setSelectedTaskIds(prev => prev.filter(id => id !== taskId));
+    } else {
+      setSelectedTaskIds(prev => [...prev, taskId])
+    }
+  }
+  //ricerca ottimizzata 
   const debounceSearch = useCallback(
     debounce((value) => {
       setSearchQuery(value);
@@ -58,6 +68,7 @@ const TaskList = () => {
   }, [tasks, sortBy, sortOrder, searchQuery]
   )
 
+  console.log(selectedTaskIds)
 
   return (
     <div>
@@ -70,6 +81,7 @@ const TaskList = () => {
       <table className="task-table">
         <thead>
           <tr>
+            <th>Selziona</th>
             <th
               onClick={() => handlerSort("title")}
             >Nome
@@ -92,7 +104,13 @@ const TaskList = () => {
 
         <tbody>
           {filteredAndSortedTasks.map((task, index) => (
-            <TaskRow key={index} task={task} />
+            <TaskRow
+              key={index}
+              task={task}
+              checked={selectedTaskIds.includes(task.id)}
+
+              onToggle={toggleSelection}
+            />
           ))}
         </tbody>
       </table>

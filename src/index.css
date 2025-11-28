@@ -324,3 +324,8 @@
 th {
   cursor: pointer;
 }
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  cursor: pointer;
+}

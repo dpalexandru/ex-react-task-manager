@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-const TaskRow = ({ task }) => {
+const TaskRow = ({ task, checked, onToggle }) => {
 
   const navigate = useNavigate();
 
@@ -23,6 +23,14 @@ const TaskRow = ({ task }) => {
       <tr
         onClick={() => navigate(`/task/${task.id}`)}
         style={{ cursor: "pointer" }}>
+
+        <td><input
+          type="checkbox"
+          checked={checked}
+          onChange={() => onToggle(task.id)}
+          onClick={(e) => e.stopPropagation()}
+        />
+        </td>
         <td>{task.title}</td>
 
         <td
@@ -33,7 +41,7 @@ const TaskRow = ({ task }) => {
         <td>{formattedDate}</td>
       </tr>
     );
-  }, [task]);
+  }, [task, checked, onToggle]);
 
 
   return row;
