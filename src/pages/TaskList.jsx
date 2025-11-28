@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useState } from 'react';
 import { useGlobalContext } from '../context/GlobalContext'
 import TaskRow from '../components/TaskRow';
+import { debounce } from "lodash";
+
 
 
 const TaskList = () => {
@@ -12,6 +14,14 @@ const TaskList = () => {
   const [sortOrder, setSortOrder] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
   console.log(searchQuery)
+
+  const debounceSearch = useCallback(
+    debounce((value) => {
+      setSearchQuery(value);
+    }, 500),
+    []
+  );
+
 
   //funzione ordinamento 
   const handlerSort = (field) => {
@@ -54,8 +64,7 @@ const TaskList = () => {
       <h1 className="titolo">Elenco dei Task</h1>
       <span>Cerca per nome task</span>
       <input type="text"
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
+        onChange={e => debounceSearch(e.target.value)}
       />
 
       <table className="task-table">
