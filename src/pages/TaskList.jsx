@@ -7,7 +7,7 @@ import { debounce } from "lodash";
 
 
 const TaskList = () => {
-  const { tasks } = useGlobalContext()
+  const { tasks, removeMultipleTasks } = useGlobalContext()
 
   //stati  
   const [sortBy, setSortBy] = useState("createdAt")
@@ -67,9 +67,10 @@ const TaskList = () => {
 
   }, [tasks, sortBy, sortOrder, searchQuery]
   )
-
-  console.log(selectedTaskIds)
-
+  //funzione per eliminazione task multipla 
+  function handleDelite() {
+    removeMultipleTasks(selectedTaskIds)
+  }
   return (
     <div>
       <div className='actions-section'>
@@ -79,7 +80,9 @@ const TaskList = () => {
           onChange={e => debounceSearch(e.target.value)}
         />
         {selectedTaskIds.length > 0 && (
-          <button className='cancella-selezionati'>Elimina Task selezionati</button>
+          <button
+            onClick={handleDelite}
+            className='cancella-selezionati'>Elimina Task selezionati</button>
         )}
 
       </div>

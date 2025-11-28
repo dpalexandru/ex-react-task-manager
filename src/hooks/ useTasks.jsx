@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from 'react'
 import TaskRow from "../components/TaskRow";
+import { forEach } from "lodash";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -93,9 +94,35 @@ const useTasks = () => {
     }
   }
 
+  // rimozione multiple
+  async function removeMultipleTasks(taskIds) {
+    const deleteRequests = taskIds.map((taskId) => (
+      fetch(`${API_URL}/tasks/${taskId}`,
+        { method: "DELETE" }
+      ).then(res => res.json())
+    ))
+    const results = await Promise.allSettled(deleteRequests)
+    const fullfieldDelitions = []
+    const rejctedDelitions = []
+
+    results.forEach((result, index) => {
+      const taskId = taskIds[index]
+      if (result.status === "fulfilled") {
+        fullfieldDelitions.push(taskId)
+      } else {
+        rejctedDelitions.push(taskId)
+      }
+    })
+
+    if (fullfieldDelitions.length > 0) {
+      setTasks(prev => prev.filter(t => !fullfieldDelitions.includes(t.id)))
+    }
+
+  }
 
 
-  return [tasks, addTask, removeTask, updateTask]
+
+  return [tasks, addTask, removeTask, updateTask, removeMultipleTasks]
 }
 
 export default useTasks

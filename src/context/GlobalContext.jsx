@@ -5,11 +5,11 @@ const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   // stati 
-  const [tasks, addTask, removeTask, updateTask] = useTasks()
+  const [tasks, addTask, removeTask, updateTask, removeMultipleTasks] = useTasks()
 
 
   return (
-    <GlobalContext.Provider value={{ tasks, addTask, removeTask, updateTask }}>
+    <GlobalContext.Provider value={{ tasks, addTask, removeTask, updateTask, removeMultipleTasks }}>
       {children}
     </GlobalContext.Provider>
   );
