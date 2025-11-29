@@ -1,5 +1,8 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import "dayjs/locale/it";
+dayjs.locale("it");
 
 
 const TaskRow = ({ task, checked, onToggle }) => {
@@ -17,7 +20,7 @@ const TaskRow = ({ task, checked, onToggle }) => {
             ? "#baf7ba"
             : "";
 
-    const formattedDate = new Date(task.createdAt).toLocaleString("it-IT");
+    const formattedDate = dayjs(task.createdAt).format("DD/MM/YYYY HH:mm");
 
     return (
       <tr

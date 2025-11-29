@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from 'react'
 import TaskRow from "../components/TaskRow";
-import { forEach } from "lodash";
+import { forEach, result } from "lodash";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -96,30 +96,40 @@ const useTasks = () => {
 
   // rimozione multiple
   async function removeMultipleTasks(taskIds) {
-    const deleteRequests = taskIds.map((taskId) => (
-      fetch(`${API_URL}/tasks/${taskId}`,
-        { method: "DELETE" }
-      ).then(res => res.json())
-    ))
-    const results = await Promise.allSettled(deleteRequests)
-    const fullfieldDelitions = []
-    const rejctedDelitions = []
+    const deleteRequests = taskIds.map((taskId) =>
+      fetch(`${API_URL}/tasks/${taskId}`, { method: "DELETE" })
+        .then((res) => res.json())
+    );
 
-    results.forEach((result, index) => {
-      const taskId = taskIds[index]
-      if (result.status === "fulfilled") {
-        fullfieldDelitions.push(taskId)
+    const results = await Promise.allSettled(deleteRequests);
+
+    const fullfilledDeletions = [];
+    const rejectedDeletions = [];
+
+    results.forEach((res, index) => {
+      const taskId = taskIds[index];
+
+      if (res.status === "fulfilled" && res.value?.success !== false) {
+        fullfilledDeletions.push(taskId);
       } else {
-        rejctedDelitions.push(taskId)
+        rejectedDeletions.push(taskId);
       }
-    })
+    });
 
-    if (fullfieldDelitions.length > 0) {
-      setTasks(prev => prev.filter(t => !fullfieldDelitions.includes(t.id)))
+    // Aggiorno stato locale togliendo solo quelle davvero eliminate
+    if (fullfilledDeletions.length > 0) {
+      setTasks((prev) => prev.filter((t) => !fullfilledDeletions.includes(t.id)));
     }
 
-  }
+    console.log("Risultati eliminazioni multiple:", results);
 
+    // Se qualche delete è fallita, lancio un errore con gli id
+    if (rejectedDeletions.length > 0) {
+      throw new Error(
+        `Errore nell'eliminazione dei task con id: ${rejectedDeletions.join(", ")}`
+      );
+    }
+  }
 
 
   return [tasks, addTask, removeTask, updateTask, removeMultipleTasks]

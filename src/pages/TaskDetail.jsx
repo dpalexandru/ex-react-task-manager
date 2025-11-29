@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
 import ModalConfirm from '../components/ModalConfirm';
 import EditTaskModal from '../components/EditTaskModal';
+import dayjs from "dayjs";
+dayjs.locale("it");
 
 const TaskDetail = () => {
   const { tasks, removeTask, updateTask } = useGlobalContext();
@@ -47,6 +49,9 @@ const TaskDetail = () => {
     }
   }
 
+  //formatto la data 
+  const formattedDate = dayjs(task.createdAt).format("DD/MM/YYYY HH:mm");
+
 
   // se non c'è il task
   if (!task) return <p>Task non trovato...</p>;
@@ -84,7 +89,7 @@ const TaskDetail = () => {
           <p><strong>Nome:</strong> {task.title}</p>
           <p><strong>Stato:</strong> {task.status}</p>
           <p><strong>Descrizione:</strong> {task.description}</p>
-          <p><strong>Creato il:</strong> {new Date(task.createdAt).toLocaleString("it-IT")}</p>
+          <p><strong>Creato il:</strong> {formattedDate}</p>
 
           <button onClick={handleClickDelete}>
             Elimina Task
