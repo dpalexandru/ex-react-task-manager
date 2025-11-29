@@ -27,6 +27,11 @@ const useTasks = () => {
 
   //aggiungi task
   async function addTask(obj) {
+    //controllo se esiste già un task con lo stesso nome 
+    const newTaskExist = tasks.some(t => t.title === obj.title)
+    if (newTaskExist === true) {
+      throw new Error("Esite un task con lo stesso nome")
+    }
 
     try {
       const response = await fetch(`${API_URL}/tasks`, {
@@ -50,7 +55,6 @@ const useTasks = () => {
 
   //rimuovi task
   async function removeTask(id) {
-
     try {
       const response = await fetch(`${API_URL}/tasks/${id}`, {
         method: "DELETE"
@@ -70,6 +74,15 @@ const useTasks = () => {
   }
   //aggiorna task task
   async function updateTask(updatedTask) {
+
+    const otherTaskWithSameTitle = tasks.find(
+      t => t.title === updatedTask.title && t.id !== updatedTask.id
+    );
+
+    if (otherTaskWithSameTitle) {
+      throw new Error("Esiste già un task con questo nome");
+    }
+
     try {
       const res = await fetch(`${API_URL}/tasks/${updatedTask.id}`, {
         method: "PUT",

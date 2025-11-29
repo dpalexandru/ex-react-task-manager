@@ -25,7 +25,6 @@ const TaskDetail = () => {
 
     } catch (error) {
       console.error(error);
-
     }
   }
 
